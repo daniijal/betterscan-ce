@@ -12,9 +12,9 @@ RUN pipenv install --system
 #RUN pip install pylint===1.9.2
 #RUN pip install stripe
 WORKDIR /
-RUN git clone -b checkmate3 https://github.com/marcinguy/checkmate-ce /checkmate
+RUN git clone -b macos https://github.com/marcinguy/checkmate-ce /checkmate
 WORKDIR /checkmate
-RUN git checkout checkmate3
+RUN git checkout macos
 RUN git pull
 RUN python3 setup.py install
 WORKDIR /

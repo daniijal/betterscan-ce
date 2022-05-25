@@ -3,6 +3,7 @@ WORKDIR /
 RUN mkdir -p /srv
 RUN git clone https://github.com/marcinguy/scanmycode-ce.git /srv/scanmycode
 WORKDIR /srv/scanmycode
+RUN git fetch
 RUN git checkout macos
 RUN git pull
 RUN apt update && apt install -y libcurl4-nss-dev libssl-dev tree sudo git ssh rsync npm ruby-sass pipenv
@@ -12,7 +13,7 @@ RUN pipenv install --system
 RUN pip3 install pylint===1.9.2
 RUN pip3 install stripe
 WORKDIR /
-RUN git clone -b checkmate3  https://github.com/marcinguy/checkmate-ce /checkmate
+RUN git clone -b macos https://github.com/marcinguy/checkmate-ce /checkmate
 WORKDIR /checkmate
 RUN tree /checkmate
 RUN python3 setup.py install
