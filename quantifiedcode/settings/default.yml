@@ -88,8 +88,8 @@ frontend:
   #settings: {} #will be returned by the 'settings' API endpoint
   settings: 
     debug: production
-    backend_url: "http://localhost:5000/api"
-    url: "http://localhost:5000"
+    backend_url: "http://localhost:5001/api"
+    url: "http://localhost:5001"
     github:
       authorize_url: "https://github.com/login/oauth/authorize"
       client_id: 1234
@@ -123,6 +123,6 @@ plugins:
   #organizations:
   #  module: quantifiedcode.plugins.organizations
 
-url: 'http://localhost:5000'
+url: 'http://localhost:5001'
 
 

@@ -46,7 +46,7 @@ if __name__ == '__main__':
     parser.add_argument(
         dest='host',
         nargs='?',
-        default='0.0.0.0:5000',
+        default='0.0.0.0:5001',
     )
 
     args = parser.parse_args(sys.argv[1:])
@@ -59,7 +59,7 @@ if __name__ == '__main__':
         if url.port:
             port = url.port
         else:
-            port = 5000
+            port = 5001
         if url.hostname:
             host = url.hostname
         else:
