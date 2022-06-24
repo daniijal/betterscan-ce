@@ -1,11 +1,16 @@
-[<img src="https://img.shields.io/discord/953265912302141460?label=Discord%20Chat">](https://discord.gg/3pvz7Tx9Zz)
+[<img src="https://img.shields.io/discord/953265912302141460?label=Discord%20Chat">](https://discord.gg/3pvz7Tx9Zz) ![GitHub stars](https://badgen.net/github/stars/marcinguy/scanmycode-ce)
+![GitHub forks](https://badgen.net/github/forks/marcinguy/scanmycode-ce)
+![GitHub watchers](https://badgen.net/github/watchers/marcinguy/scanmycode-ce)
+![GitHub issues](https://badgen.net/github/issues/marcinguy/scanmycode-ce)
+![Docker Pulls](https://badgen.net/docker/pulls/scanmycode/scanmycode3-ce?icon=docker&label=pulls)
+
 
 
 (Above is Chat for core developers, end users, supporters - click on the badge to join) 
 
 # What it does
 
-It is a Code Scanning/SAST/Static Analysis/Linting solution using many tools/Scanners with One Report. You can also add any tool to it. Currently, it supports many languages and tech stacks. Similar to SonarQube, but it is different.
+It is a Code and Infrastructure (IaC) and Cloudnative Scanning/SAST/Static Analysis/Linting solution using many tools/Scanners with One Report. You can also add any tool to it. Currently, it supports many languages and tech stacks. Similar to SonarQube, but it is different.
 
 ![scanmycoode-concept](https://user-images.githubusercontent.com/20355405/155940853-04cb916d-658b-48e1-bae9-959af96fd2ba.png)
 
@@ -31,6 +36,29 @@ This project would not be possible without the generous support of our sponsors.
 If you also want to support this project, head over to our [Github sponsors page](https://github.com/sponsors/marcinguy) or [Patreon](https://www.patreon.com/marcinguy) (preferred due to better Tax handling)
 
 # TL;DR
+
+
+Run this command in your code directory (checkout from Git - .git folder needs to be there, if you work with normal directory, make Git repo out of it `git init && git add . && git commit` etc):
+
+`sh <(curl https://raw.githubusercontent.com/marcinguy/scanmycode-ce/master/cli.sh)`
+
+or for HTML report:
+
+`sh <(curl https://raw.githubusercontent.com/marcinguy/scanmycode-ce/master/cli-html.sh)`
+
+That's it. You just checked your code for 1,500 Checks (Defects, Vulnerabilities, Best Practices)
+
+
+Sample HTML report
+
+![image](https://user-images.githubusercontent.com/20355405/173091087-1edf7609-5006-4724-b46b-bab2502bc251.png)
+
+*Fig 2. Sample Report using CLI HTML output*
+
+FYI Above will maintain state via (.checkmate folder), only new commits will be checked.
+
+If you want to use the Platform, follow below:
+
 
 ## Local
 
@@ -72,9 +100,25 @@ Check installation on Kubernetes (Free) thanks to Okteto.com
 
 https://github.com/marcinguy/scanmycode-ce/blob/master/okteto/README.md
 
-## Platforms
+## Platforms & OS'es
 
 It is platform independent (Python). Checkers are also mostly available on different platforms. "Master" branch is for Linux x86_64, however there is also "macos" branch with Dockerfiles for arm64 (including arm64 checkers). M1 mac has arm64 architecture (30% cheaper and 30% faster than alternatives) 
+
+### Linux (amd64)
+
+Yes, by default 
+
+### MacOs (Intel and arm64)
+
+macos branch
+
+### Windows (amd64)
+
+Install Windows 10, version 1903 or higher or Windows 11.
+
+https://docs.docker.com/desktop/windows/wsl/
+
+Linux images should work
 
 ## Usage
 
@@ -86,15 +130,60 @@ https://github.com/marcinguy/scanmycode-ce/wiki
 
 You can plug it anywhere on your CI/CD pipeline as a command.
 
-With SMC one command, you add 1000+ checks using different scanners (SMC is Meta scanner in that sense, with supporting smart snapshots and other goodies. It is not just running tools always on full code) 
+With SMC one command, you add 1,500+ checks using different scanners (SMC is Meta scanner in that sense, with supporting smart snapshots and other goodies. It is not just running tools always on full code) 
 
 SMC supports also CLI only mode, no Web Interface, worker etc. Run a binary in Docker in your own CI/CD pipeline (whatever it is) in Quality Gates that will output line by line (scanner and findings) on checkout code from Git (folder) 
 
 ![photo_2022-05-10_19-16-07](https://user-images.githubusercontent.com/20355405/167685447-84ba2b50-26fc-4143-9bb2-987ccd5e3a92.jpg)
 
-*Fig 2. Sample CI/CD Pipeline (Photo courtesy of Viking from THC Telegram Channel)*
+*Fig 3. Sample CI/CD Pipeline (Photo courtesy of Viking from THC Telegram Channel)*
 
 You can put it under Quality Gates.
+
+### Quick Install
+
+
+#### Plain CLI output
+
+Just run this command (it will take care of everything):
+
+
+`sh <(curl https://raw.githubusercontent.com/marcinguy/scanmycode-ce/master/cli.sh)`
+
+Corresponds to running these:
+
+```
+export CODE_DIR=${PWD}
+cd $CODE_DIR
+docker run -e CODE_DIR -v ${PWD}:${PWD}  -ti  scanmycode/scanmycode3-ce:worker-cli /bin/sh -c 'cd $CODE_DIR && checkmate init'
+docker run -e CODE_DIR -v ${PWD}:${PWD}  -ti  scanmycode/scanmycode3-ce:worker-cli /bin/sh -c 'cd $CODE_DIR && checkmate git init'
+docker run -e CODE_DIR -v ${PWD}:${PWD}  -ti  scanmycode/scanmycode3-ce:worker-cli /bin/sh -c 'cd $CODE_DIR && checkmate git analyze'
+docker run -e CODE_DIR -v ${PWD}:${PWD}  -ti  scanmycode/scanmycode3-ce:worker-cli /bin/sh -c 'cd $CODE_DIR && checkmate issues'
+```
+
+#### HTML CLI output
+
+Just run this command (it will take care of everything):
+
+`sh <(curl https://raw.githubusercontent.com/marcinguy/scanmycode-ce/master/cli-html.sh)`
+
+report will be in the directory under `report.html`
+
+
+Corresponds to running these:
+
+```
+export CODE_DIR=${PWD}
+cd $CODE_DIR
+docker run -e CODE_DIR -v ${PWD}:${PWD}  -ti  scanmycode/scanmycode3-ce:worker-cli /bin/sh -c 'cd $CODE_DIR && checkmate init'
+docker run -e CODE_DIR -v ${PWD}:${PWD}  -ti  scanmycode/scanmycode3-ce:worker-cli /bin/sh -c 'cd $CODE_DIR && checkmate git init'
+docker run -e CODE_DIR -v ${PWD}:${PWD}  -ti  scanmycode/scanmycode3-ce:worker-cli /bin/sh -c 'cd $CODE_DIR && checkmate git analyze'
+docker run -e CODE_DIR -v ${PWD}:${PWD}  -ti  scanmycode/scanmycode3-ce:worker-cli /bin/sh -c 'cd $CODE_DIR && checkmate issues html'
+```
+
+
+### Detailed explanation
+
 
 Build Docker image Worker-CLI and run `checkmate` from there. Below is sample flow:
 
@@ -241,13 +330,13 @@ The application consists of several parts:
 * A backend, realized as a Flask app, that exposes a REST API consumed by the frontend
 * A background worker, realized using Celery, that performs the code analysis
 
-Currently supports: PHP, Java, Scala, Python, Ruby, Javascript, Typescript, GO, Solidity, DeFi Security (DeFi exploits), Infractructure as a Code (IaC) Security and Best Practices (Docker, Kubernetes (k8s), Terraform AWS, GCP, Azure), Secret Scanning, Dependency Confusion, Trojan Source, Open Source and Proprietary Checks (total ca. 1000 checks) 
+Currently supports: PHP, Java, Scala, Python, Ruby, Javascript, Typescript, GO, Solidity, DeFi Security (DeFi exploits), Infractructure as a Code (IaC) Security and Best Practices (Docker, Kubernetes (k8s), Terraform AWS, GCP, Azure), Secret Scanning, Dependency Confusion, Trojan Source, Open Source and Proprietary Checks (total ca. 1,500+ checks) 
 
 Advantages:
 * Many tools, one report (unification) 
 * Dismiss, collaborate on findings. Mark false-positives
 * Enable/disable each individual check in Checkers
-* ca. 1000 checks now (Linters, Static Code Analysis/Code Scanning) 
+* ca. 1,500+ checks now (Linters, Static Code Analysis/Code Scanning) 
 * any tool outputting JSON can be added
 * fast (checks only new code on recheck)
 * Git support (HTTPS/TLS and SSH). For private repositories only SSH. 
